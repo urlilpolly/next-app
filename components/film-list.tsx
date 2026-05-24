@@ -5,11 +5,16 @@ import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, Pagi
 
 
 
-export default async function FilmList({page, currentPage} : {page?: number, currentPage?: number}) {
+export default async function FilmList({page, currentPage = 1} : {page?: number, currentPage?: number}) {
     const data = await prisma.film.findMany({
         skip: currentPage ? (currentPage-1) * 6 : 0,
         take: 6
     })
+    const totalFilms = await prisma.film.count();
+    const totalPages = Math.ceil(totalFilms / 6);
+    const safeCurrentPage = Math.min(Math.max(currentPage, 1), totalPages || 1);
+    const prevPage = safeCurrentPage - 1;
+    const nextPage = safeCurrentPage + 1;
     return (
         <>
         <div className="grid gap-8 grid-cols-3">
@@ -20,7 +25,11 @@ export default async function FilmList({page, currentPage} : {page?: number, cur
         <Pagination>
             <PaginationContent>
                 <PaginationItem>
-                <PaginationPrevious href="#" />
+                <PaginationPrevious href={safeCurrentPage === 1 ? "#" : `?page=${prevPage}`} className={
+                  safeCurrentPage === 1
+                    ? "pointer-events-none opacity-50"
+                    : ""
+                }/>
                 </PaginationItem>
                 <PaginationItem>
                 <PaginationLink href="?page=1">1</PaginationLink>
@@ -36,7 +45,11 @@ export default async function FilmList({page, currentPage} : {page?: number, cur
                 <PaginationEllipsis />
                 </PaginationItem>
                 <PaginationItem>
-                <PaginationNext href="#" />
+                <PaginationNext href={safeCurrentPage === totalPages ? "#" : `?page=${nextPage}`} className={
+                  safeCurrentPage === totalPages
+                    ? "pointer-events-none opacity-50"
+                    : ""
+                }/>
                 </PaginationItem>
             </PaginationContent>
             </Pagination>
