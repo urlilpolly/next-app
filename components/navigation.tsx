@@ -1,7 +1,6 @@
 "use client"
 
 import Link from "next/link";
-import { NavigationMenuLink } from "./ui/navigation-menu";
 import { usePathname } from "next/navigation";
 import { UserName } from "./username";
 
@@ -44,7 +43,6 @@ export default function Navbar() {
             )
           })}
         </nav>
-
         <div className="hidden md:flex items-center gap-4">
             <UserName />
         </div>

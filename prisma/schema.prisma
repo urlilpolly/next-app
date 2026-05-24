@@ -22,6 +22,7 @@ model User {
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
+  film Film[]
 
   @@unique([email])
   @@map("user")
@@ -61,4 +62,12 @@ model Account {
 
   @@index([userId])
   @@map("account")
+}
+
+model Film {
+  id Int @id @default(autoincrement())
+  content String
+  title String
+  authorId String
+  author User @relation(fields: [authorId], references: [id])
 }
