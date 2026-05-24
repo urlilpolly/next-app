@@ -8,7 +8,7 @@ import { UserName } from "./username";
 const navItems = [
   {
     title: "Главная",
-    href: "/",
+    href: "/main",
   },
   {
     title: "Фильмы",
