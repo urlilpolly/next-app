@@ -22,3 +22,17 @@ export async function createCard(formData: FormData){
     })
     redirect("/dashboard")
 }
+
+export async function searchFilm(formData: FormData) {
+  const query = formData.get("query") as string;
+
+  const params = new URLSearchParams();
+
+  if (query?.trim()) {
+    params.set("query", query.trim());
+  }
+
+  params.set("page", "1");
+
+  redirect(`/dashboard?${params.toString()}`);
+}
